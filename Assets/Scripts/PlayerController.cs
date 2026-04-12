@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviour
     public AudioClip win;
 
     public AudioClip lose;
+    
+    public AudioClip explosion;
+
+    public Transform explosionEffect;
 
     private AudioSource audioSource;
 
@@ -83,6 +87,8 @@ public class PlayerController : MonoBehaviour
             audioSource.PlayOneShot(lose, 1.0f);
             Destroy(gameObject);
 
+            collision.gameObject.GetComponentInChildren<Animator>().SetFloat("speed_f", 0);
+
             //Update the winText to display "You Lose!"
             winTextObject.gameObject.SetActive(true);
             
@@ -126,6 +132,8 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.FindGameObjectWithTag("Wall"));
             Destroy(GameObject.FindGameObjectWithTag("Wall 2"));
             Destroy(GameObject.FindGameObjectWithTag("Enemy"));
+            Instantiate(explosionEffect, GameObject.FindGameObjectWithTag("Enemy").transform.position, GameObject.FindGameObjectWithTag("Enemy").transform.rotation);
+            audioSource.PlayOneShot(explosion, 1.0f);
         }
 
         if (count >= 24)
@@ -139,6 +147,10 @@ public class PlayerController : MonoBehaviour
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Win!";
             Destroy(GameObject.FindGameObjectWithTag("Enemy 2"));
             Destroy(GameObject.FindGameObjectWithTag("Enemy 3"));
+            Destroy(GameObject.FindGameObjectWithTag("SoundTrack"));
+            Instantiate(explosionEffect, GameObject.FindGameObjectWithTag("Enemy2").transform.position, GameObject.FindGameObjectWithTag("Enemy2").transform.rotation);
+            Instantiate(explosionEffect, GameObject.FindGameObjectWithTag("Enemy3").transform.position, GameObject.FindGameObjectWithTag("Enemy3").transform.rotation);
+            audioSource.PlayOneShot(explosion, 1.0f);
         }
     }
 }
